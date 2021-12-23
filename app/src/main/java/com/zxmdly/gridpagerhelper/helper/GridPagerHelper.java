@@ -11,8 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * @author zhouxuming
- * @date 2021/12/23 9:59 上午 一款支持加载更多、滑动惯性定位、页码计算的列表辅助器
- * 目前仅支持 Grid 方式，理论上 Linear 也可以支持，不支持瀑布流 Layout
+ * @date 2021/12/23 9:59 上午 一款支持加载更多、滑动惯性定位、页码计算的列表辅助器 目前仅支持 Grid 方式，理论上 Linear 也可以支持，不支持瀑布流 Layout
+ * //
  */
 public class GridPagerHelper extends OnScrollListener {
 
@@ -26,6 +26,8 @@ public class GridPagerHelper extends OnScrollListener {
   private boolean loadCompleted = true;
   private boolean isPreLoad = true; //是否预加载
   private int uiPageSize;//每页数据多少条
+  private int dx;
+  private int dy;
 
   private OnGridPagerHelperListener listener;
 
@@ -66,7 +68,7 @@ public class GridPagerHelper extends OnScrollListener {
 
         //处理加载更多
         if (isPreLoad) {
-          if (lastVisiblePosition > totalItem - uiPageSize) {//默认提前一页预加载
+          if (lastVisiblePosition > totalItem - uiPageSize && handleDirection(gridLayoutManager)) {//默认提前一页预加载
             if (loadCompleted) {
               listener.onLoadMore();
             } else {
@@ -75,7 +77,7 @@ public class GridPagerHelper extends OnScrollListener {
             loadCompleted = false;
           }
         } else {
-          if (lastVisiblePosition == totalItem) {//正常滑动到底部加载
+          if (lastVisiblePosition == totalItem && handleDirection(gridLayoutManager)) {//正常滑动到底部加载
             if (loadCompleted) {
               listener.onLoadMore();
             } else {
@@ -95,6 +97,8 @@ public class GridPagerHelper extends OnScrollListener {
       GridLayoutManager gridLayoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
       findPosition(gridLayoutManager);
       callbackPage();
+      this.dx = dx;
+      this.dy = dy;
     }
   }
 
@@ -176,9 +180,18 @@ public class GridPagerHelper extends OnScrollListener {
     this.loadCompleted = loadCompleted;
   }
 
-  public void release(){
+  public void release() {
     if (recyclerView != null) {
       recyclerView.removeOnScrollListener(this);
+    }
+  }
+
+  private boolean handleDirection(GridLayoutManager layoutManager) {
+    int orientation = layoutManager.getOrientation();
+    if (orientation == RecyclerView.HORIZONTAL) {
+      return dx > 0;
+    } else {
+      return dy > 0;
     }
   }
 }

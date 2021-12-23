@@ -56,7 +56,7 @@ public class SampleFragment extends Fragment implements OnGridPagerHelperListene
         GridLayoutManager.HORIZONTAL, false);
     binding.rv.setLayoutManager(layoutManager);
     binding.rv.setAdapter(adapter);
-    helper = new GridPagerHelper(binding.rv, new Config(15).snapStyle(SnapEnum.PAGER))
+    helper = new GridPagerHelper(binding.rv, new Config(15).snapStyle(SnapEnum.LINEAR))
         .buildListener(this);
     binding.left.setOnClickListener(v -> helper.smoothPreviousPage());
     binding.right.setOnClickListener(v -> helper.smoothNextPage());

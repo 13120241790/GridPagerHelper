@@ -39,7 +39,7 @@
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/rv"
       android:layout_width="450dp"
-      android:layout_height="410dp"
+      android:layout_height="260dp"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
