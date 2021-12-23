@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/nav_graph"
+  app:startDestination="@id/FirstFragment">
+
+  <fragment
+    android:id="@+id/FirstFragment"
+    android:label="@string/first_fragment_label"
+    android:name="com.zxmdly.gridpagerhelper.fragment.FirstFragment"
+    tools:layout="@layout/fragment_first">
+
+    <action
+      android:id="@+id/action_FirstFragment_to_SampleFragment"
+      app:destination="@id/SampleFragment" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/SampleFragment"
+    android:label="@string/sample_fragment_label"
+    android:name="com.zxmdly.gridpagerhelper.fragment.SampleFragment"
+    tools:layout="@layout/fragment_sample">
+
+    <action
+      android:id="@+id/action_SampleFragment_to_FirstFragment"
+      app:destination="@id/FirstFragment" />
+  </fragment>
+
+</navigation>
