@@ -1,6 +1,7 @@
 package com.zxmdly.gridpagerhelper.helper;
 
 import android.util.Log;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
@@ -25,6 +26,7 @@ public class GridPagerHelper extends OnScrollListener {
   private int lastCompletelyVisiblePosition;
   private boolean loadCompleted = true;
   private boolean isPreLoad = true; //是否预加载
+  private int preloadFactor = 1;//预加载系数
   private int uiPageSize;//每页数据多少条
   private int dx;
   private int dy;
@@ -39,6 +41,7 @@ public class GridPagerHelper extends OnScrollListener {
     if (config != null) {
       this.isPreLoad = config.isPreLoad;
       this.uiPageSize = config.uiPageSize;
+      this.preloadFactor = config.preloadFactor;
       if (config.snapEnum == SnapEnum.PAGER) {
         new PagerSnapHelper().attachToRecyclerView(this.recyclerView);
       } else if (config.snapEnum == SnapEnum.LINEAR) {
@@ -68,7 +71,7 @@ public class GridPagerHelper extends OnScrollListener {
 
         //处理加载更多
         if (isPreLoad) {
-          if (lastVisiblePosition > totalItem - uiPageSize && handleDirection(gridLayoutManager)) {//默认提前一页预加载
+          if (lastVisiblePosition > totalItem - (uiPageSize * preloadFactor) && handleDirection(gridLayoutManager)) {//默认提前一页预加载
             if (loadCompleted) {
               listener.onLoadMore();
             } else {
@@ -109,6 +112,7 @@ public class GridPagerHelper extends OnScrollListener {
 
     private int uiPageSize;
     private boolean isPreLoad = true;
+    private int preloadFactor = 1;
     private SnapEnum snapEnum = SnapEnum.PAGER;
 
     public Config(int uiPageSize) {
@@ -120,6 +124,14 @@ public class GridPagerHelper extends OnScrollListener {
 
     public Config isPreLoad(boolean isPreLoad) {
       this.isPreLoad = isPreLoad;
+      return this;
+    }
+
+    /**
+     * 预加载系数，该系数为 uiPageSize 的倍数、默认不设置为 1 倍
+     */
+    public Config preloadFactor(@IntRange(from = 1,to = 3) int preloadFactor){
+      this.preloadFactor = preloadFactor;
       return this;
     }
 
