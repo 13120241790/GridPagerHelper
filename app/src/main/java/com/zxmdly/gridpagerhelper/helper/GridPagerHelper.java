@@ -154,7 +154,7 @@ public class GridPagerHelper extends OnScrollListener {
    * 翻下一页
    */
   public void smoothNextPage() {
-    int i = lastVisiblePosition + uiPageSize;
+    int i = lastCompletelyVisiblePosition + uiPageSize;
     recyclerView.smoothScrollToPosition(i);
   }
 
@@ -162,7 +162,7 @@ public class GridPagerHelper extends OnScrollListener {
    * 翻上一页
    */
   public void smoothPreviousPage() {
-    int i = firstVisiblePosition - uiPageSize;
+    int i = firstCompletelyVisiblePosition - uiPageSize;
     recyclerView.smoothScrollToPosition(i);
   }
 
